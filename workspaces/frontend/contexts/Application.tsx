@@ -9,7 +9,6 @@ import {
   import { useApi } from "@/contexts/Api";
   
   export type UserInfo = {
-    id: string;
     resoniteUserId: string;
   };
   

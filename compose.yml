@@ -1,0 +1,8 @@
+services:
+  redis:
+    restart: always
+    image: redis:6-alpine
+    volumes:
+      - ./redis:/data
+    ports:
+      - "6379:6379"

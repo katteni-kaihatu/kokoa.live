@@ -1,6 +1,7 @@
 'use client';
 
 import { useApplication } from "@/contexts/Application";
+import { useApi } from "@/contexts/Api";
 import { Header } from "../components/Header";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -8,18 +9,49 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
-import IconButton from "@mui/material/IconButton";
+import IconButton from "@mui/icons-material/Refresh";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ObsInfoPanel } from "../components/ObsInfoPanel";
 
 export default function Home() {
-  const app = useApplication()
+  const app = useApplication();
+  const api = useApi();
+  const router = useRouter();
+  
+  const [iframeKey, setIframeKey] = useState(0);
 
+  // ログインボタン押下時
+  const handleLogin = () => {
+    window.location.href = `https://auth.resonite.love?link=${window.location.origin}&linkType=REDIRECT`;
+  };
 
-  // if(app.loggedIn) {
-  if(true) {
-    const [iframeKey, setIframeKey] = useState(0);
+  // RLTokenがクエリにある場合の処理
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    const RLToken = url.searchParams.get("RLToken");
+    if (RLToken) {
+      url.searchParams.delete("RLToken");
+      window.history.replaceState(null, "", url.toString());
+      api.login(RLToken).then((result: boolean) => {
+        if (result) {
+          const redirectPath = localStorage.getItem("redirectPath");
+          if (redirectPath) {
+            localStorage.removeItem("redirectPath");
+            router.push(redirectPath);
+          } else {
+            window.location.href = "/";
+          }
+        }
+      });
+    }
+  }, [api, router]);
+
+  if (!app.appReady) return <></>;
+
+  if (app.loggedIn) {
 
     return (
       <>
@@ -54,7 +86,6 @@ export default function Home() {
                 </Typography>
                 <IconButton
                   aria-label="再読み込み"
-                  size="small"
                   onClick={() => setIframeKey(k => k + 1)}
                   sx={{ ml: 1 }}
                 >
@@ -153,13 +184,29 @@ export default function Home() {
           <ObsInfoPanel />
         </Box>
       </>
-    )
+    );
   }
 
+  // 未ログイン時
   return (
-    <>
-      <Header></Header>
-      <div>ログインしていません</div>
-    </>
+    <Box>
+      <Header />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          ログイン
+        </Typography>
+        <Button variant="contained" onClick={handleLogin}>
+          Resonite.loveでログイン
+        </Button>
+      </Box>
+    </Box>
   );
 }
