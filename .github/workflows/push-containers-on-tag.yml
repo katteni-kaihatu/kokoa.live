@@ -48,7 +48,7 @@ jobs:
 
       - name: Build frontend Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/frontend:${{ github.ref_name }} ./workspaces/frontend
+          docker build --build-arg BACKEND_API_ORIGIN=http://backend:3001 -t ghcr.io/${{ github.repository }}/frontend:${{ github.ref_name }} ./workspaces/frontend
 
       - name: Push frontend Docker image
         run: |
