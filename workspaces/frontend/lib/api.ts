@@ -75,4 +75,55 @@ export class ApiClient {
             return null;
         }
     }
+
+    async getLiveStatus() {
+        try {
+            const result = await fetch(`/api/live/status`, {
+                credentials: "include",
+            });
+            if (!result.ok) {
+                return null;
+            }
+            return await result.json();
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async setLiveStatus({
+        name,
+        description,
+        iconUrl,
+    }: {
+        name: string;
+        description: string;
+        iconUrl?: string;
+    }) {
+        try {
+            const result = await fetch(`/api/live/status`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ name, description, iconUrl }),
+            });
+            return await result.json();
+        } catch (e) {
+            return { success: false, message: "network error" };
+        }
+    }
+
+    async deleteLiveStatus() {
+        try {
+            const result = await fetch(`/api/live/status`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+            // 204 or 200
+            return result.ok;
+        } catch (e) {
+            return false;
+        }
+    }
 }

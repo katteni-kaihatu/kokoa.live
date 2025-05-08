@@ -28,8 +28,6 @@ export function ObsInfoPanel() {
         p: 2,
         minWidth: 280,
         maxWidth: 320,
-        ml: { xs: 0, md: 4 },
-        mt: { xs: 4, md: 0 },
         background: "#f7fafd",
         display: "flex",
         flexDirection: "column",

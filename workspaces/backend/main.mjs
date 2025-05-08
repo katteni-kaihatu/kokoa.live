@@ -131,6 +131,14 @@ app.post("/api/live/status", (req, res) => {
     return res.json({success: true})
 })
 
+app.delete("/api/live/status", (req, res) => {
+    liveStatus = {
+        name: "",
+        description: "",
+        iconUrl: ""
+    }
+    return res.json({success: true})
+})
 
 app.listen(3001, () => {
     console.log("server listen on port 3001")
