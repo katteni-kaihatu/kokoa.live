@@ -1,0 +1,26 @@
+{
+  "name": "kokoa.live",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:backend": "npm run dev -w workspaces/backend",
+    "dev:frontend": "npm run dev -w workspaces/frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katteni-kaihatu/kokoa.live.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katteni-kaihatu/kokoa.live/issues"
+  },
+  "homepage": "https://github.com/katteni-kaihatu/kokoa.live#readme",
+  "workspaces": [
+    "workspaces/backend",
+    "workspaces/frontend"
+  ]
+}
