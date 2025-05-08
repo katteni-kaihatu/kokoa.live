@@ -8,19 +8,19 @@ services:
       - "6379:6379"
 
   backend:
-    image: ghcr.io/katteni-kaihatu/kokoa.live/backend:v0.0.0-alpha.3
+    image: ghcr.io/katteni-kaihatu/kokoa.live/backend:v1.0.0
     restart: always
     depends_on:
       - redis
     environment:
-      APP_AUDIENCE: "https://kokoa.live"
+      APP_AUDIENCE: "http://localhost:3000"
       REDIS_URL: "redis://redis:6379"
       SESSION_SECRET: "adwawd"
     ports:
       - "3001:3001"
 
   frontend:
-    image: ghcr.io/katteni-kaihatu/kokoa.live/frontend:v0.0.0-alpha.3
+    image: ghcr.io/katteni-kaihatu/kokoa.live/frontend:v1.0.0
     restart: always
     depends_on:
       - backend
